@@ -48,6 +48,7 @@ const chooseWinner = (userChoice) => {
     winner.innerHTML = drawResultText
   }
 }
+
 rockBtn.addEventListener('click', () => chooseWinner('rock'))
 paperBtn.addEventListener('click', () => chooseWinner('paper'))
 scissorsBtn.addEventListener('click', () => chooseWinner('scissors'))
