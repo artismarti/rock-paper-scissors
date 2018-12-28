@@ -1,10 +1,11 @@
 class PlayersController < ApplicationController
   before_action :find_player, only: [:show, :update, :destroy]
+
   # GET /players
   def index
-    @players = Player.all
-    json_response(@players)
+    render json: Player.all, serializer: PlayersSerializer
   end
+
 
   # POST /players
   def create
@@ -32,11 +33,10 @@ class PlayersController < ApplicationController
   private
 
   def player_params
-    params.permit(:username)
+    params.require(:player).permit(:username, games: %i[id computer_move player_move game_score])
   end
 
   def find_player
     @player = Player.find(params[:id])
   end
-
 end
