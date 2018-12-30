@@ -73,24 +73,11 @@ RSpec.describe 'Games API' do
         expect(response).to have_http_status(201)
       end
     end
-
-    # context 'when an invalid request' do
-    #   before { post "/players/#{player_id}/games", params:  }
-    #
-    #   it 'returns status code 422' do
-    #     expect(response).to have_http_status(422)
-    #   end
-    #
-    #   it 'returns a failure message' do
-    #     expect(response.body).to match(/Validation failed: Game can't be blank/)
-    #   end
-    # end
   end
 
   # Test suite for PUT /players/:player_id/games/:id
   describe 'PUT /players/:player_id/games/:id' do
-    let(:valid_attributes) {  {computer_move: 3, player_move: 1, game_score: 1} }
-
+    let(:valid_attributes) { { computer_move: 3, player_move: 1, game_score: 1 } }
     before { put "/players/#{player_id}/games/#{id}", params: valid_attributes }
 
     context 'when game exists' do
