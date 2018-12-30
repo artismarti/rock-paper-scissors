@@ -1,59 +1,85 @@
-const playersURL = `http://127.0.0.1:3000/players/`
-
+const playersURL = `http://localhost:3000/players/`
+const leaderBoardDiv = document.getElementById('leaderboard')
+const playerListUl = document.getElementById('playerlist')
+let playerLabels = []
+let playerTotalScores = []
 // fetch Players
 const fetchPlayers = () => {
   fetch(playersURL)
     .then(response => response.json())
-    .then((players) => renderAllPlayers(players))
+    .then((players) => renderLeaderBoardChart(players))
 }
 
-// renderAllPlayers
-const renderAllPlayers = (players) => {
-  players.forEach((player) => {
-    renderSinglePlayer(player)
+// // renderSinglePlayer
+// const renderSinglePlayer = (player) => {
+//   let playerLI = document.createElement('li')
+//   playerLI.innerHTML = `
+//   <h2>${player.username}</h2>
+//   <p>Final Score: ${calculateTotalScore(player)}</p>
+//   `
+// }
+
+const calculateTotalScore = (player) => {
+  let totalScore = 0
+  player.games.forEach((game) => {
+    totalScore += game.game_score
   })
+  return totalScore
 }
 
-// renderSinglePlayer
-const renderSinglePlayer = (player) => {
-  //  create a leaderboard section
-  //  maybe on index or maybe a separate leaderboard html file
-}
+fetchPlayers()
 
-const ctx = document.getElementById('myChart').getContext('2d')
-const myChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [{
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
+const renderLeaderBoardChart = (players) => {
+  players.all_players_games.forEach((player) => {
+    // renderSinglePlayer(player)
+    playerLabels.push(player.username)
+    playerTotalScores.push(calculateTotalScore(player))
+  })
+  const ctx = document.getElementById('myChart').getContext('2d')
+  const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: playerLabels,
+      datasets: [{
+        label: 'Points Scored',
+        data: playerTotalScores,
+        backgroundColor: function (context) {
+          let index = context.dataIndex
+          let value = context.dataset.data[index]
+          (value < 0) ? 'red' : 'green' // draw negative values in red
         }
       }]
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              fontColor: '#556F7B',
+              fontFamily: 'Roboto Mono'
+            },
+            gridLines: {
+              zeroLineColor: 'transparent',
+              drawTicks: false,
+              display: false,
+              drawBorder: true
+            }
+          }],
+        xAxes: [
+          {
+            ticks: {
+              fontColor: '#556F7B',
+              fontFamily: 'Roboto Mono'
+            },
+            gridLines: {
+              zeroLineColor: 'transparent',
+              drawTicks: true,
+              display: true,
+              drawBorder: true
+            }
+          }
+        ]
+      }
     }
-  }
-})
+  })
+}
