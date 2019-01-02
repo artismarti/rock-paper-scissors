@@ -1,54 +1,41 @@
-const rockBtn = document.getElementById('rock')
-const paperBtn = document.getElementById('paper')
-const scissorsBtn = document.getElementById('scissors')
-const playerChoiceDiv = document.getElementById('player-choice')
-const computerChoiceDiv = document.getElementById('computer-choice')
-const winner = document.getElementById('winner')
+const playerUserName = document.getElementById('username')
+const playButton = document.getElementById('play')
 
-const computerChoice = () => {
-  let randomNumber = Math.floor((Math.random() * 3) + 1)
-  if (randomNumber === 1) {
-    return 'rock'
-  } else if (randomNumber === 2) {
-    return 'paper'
-  } else {
-    return 'scissors'
-  }
+const setCookie = (cname, cvalue, exdays) => {
+  let d = new Date()
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000))
+  let expires = 'expires=' + d.toGMTString()
+  document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/'
 }
 
-const chooseWinner = (userChoice) => {
-  let computerChoiceValue = computerChoice()
-  playerChoiceDiv.innerHTML = `
-    <h3>You have chosen: <span class='choice'>${userChoice}</span></h3>
-  `
-  computerChoiceDiv.innerHTML = `
-    <h3>The Computer has chosen: <span class='choice'>${computerChoiceValue}</span></h3>
-  `
-  let drawResultText = `<h1>It's a draw! Play again...</h1>`
-  let computerVictoryText = `<h1>Computer Wins!</h1>`
-  let userVictoryText = `<h1>You Win!</h1>`
-
-  if (userChoice === 'rock' && computerChoiceValue === 'rock') {
-    winner.innerHTML = drawResultText
-  } else if (userChoice === 'rock' && computerChoiceValue === 'paper') {
-    winner.innerHTML = computerVictoryText
-  } else if (userChoice === 'rock' && computerChoiceValue === 'scissors') {
-    winner.innerHTML = userVictoryText
-  } else if (userChoice === 'paper' && computerChoiceValue === 'rock') {
-    winner.innerHTML = userVictoryText
-  } else if (userChoice === 'paper' && computerChoiceValue === 'paper') {
-    winner.innerHTML = drawResultText
-  } else if (userChoice === 'paper' && computerChoiceValue === 'scissors') {
-    winner.innerHTML = computerVictoryText
-  } else if (userChoice === 'scissors' && computerChoiceValue === 'rock') {
-    winner.innerHTML = computerVictoryText
-  } else if (userChoice === 'scissors' && computerChoiceValue === 'paper') {
-    winner.innerHTML = userVictoryText
-  } else if (userChoice === 'scissors' && computerChoiceValue === 'scissors') {
-    winner.innerHTML = drawResultText
+const getCookie = (cname) => {
+  let name = cname + '='
+  let decodedCookie = decodeURIComponent(document.cookie)
+  let ca = decodedCookie.split(';')
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i]
+    while (c.charAt(0) === ' ') {
+      c = c.substring(1)
+    }
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length)
+    }
   }
+  return ''
 }
 
-rockBtn.addEventListener('click', () => chooseWinner('rock'))
-paperBtn.addEventListener('click', () => chooseWinner('paper'))
-scissorsBtn.addEventListener('click', () => chooseWinner('scissors'))
+const checkCookie = () => {
+  let user = playerUserName.value
+  if (user !== '' && user !== null) {
+    setCookie('username', user, 30)
+    console.log(document.cookie)
+  }
+}
+const eraseCookie = () => {
+  setCookie('username', '', -1);
+}
+
+playButton.addEventListener('click', () => {
+  console.log('Im in')
+  checkCookie()
+})
