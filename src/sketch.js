@@ -5,9 +5,10 @@ let label = 'test'
 // let rockButton
 // let paperButton
 // let trainButton
+let classifyButton
 
 function modelReady () {
-  console.log('---000-0-')
+  console.log('--000000--')
   console.log('Model is ready!!!')
   classifier.load('./src/model.json ', customModelReady)
 }
@@ -15,7 +16,10 @@ function modelReady () {
 function customModelReady () {
   console.log('Custom Model is ready!!!')
   label = 'model ready'
-  classifier.classify(gotResults)
+  classifyButton = createButton('classify!')
+  classifyButton.mousePressed(function () {
+    classifier.classify(gotResults)
+  })
 }
 
 function videoReady () {
@@ -34,6 +38,8 @@ function videoReady () {
 function gotResults (error, result) {
   if (error) {
     console.error(error)
+    label = result
+    classifier.classify(gotResults)
   } else {
     label = result
     classifier.classify(gotResults)
