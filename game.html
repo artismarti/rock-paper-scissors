@@ -9,7 +9,11 @@
   <link rel="stylesheet" href="src/index.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   <script defer src="src/game.js"></script>
-  <script defer src="src/video.js"></script>
+  <!-- <script defer src="src/video.js"></script> -->
+  <script defer src="src/sketch.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js"></script>
+<script src="https://unpkg.com/ml5@0.1.3/dist/ml5.min.js"></script>
   <title>Rock Paper Scissors</title>
 </head>
 <body class='container center'>
@@ -19,11 +23,11 @@
   </div>
 
   <h2>Pick one:</h2>
-  <div id='rps'>
+  <!-- <div id='rps'>
     <button type="button" id='1' name="button">ROCK</button>
     <button type="button" id='2' name="button">PAPER</button>
     <button type="button" id='3' name="button">SCISSORS</button>
-  </div>
+  </div> -->
   <div id="player-choice">
 
   </div>
@@ -33,8 +37,10 @@
   <div id='winner'>
 
   </div>
-  <video id="video" width="640" height="480" autoplay></video>
-<button id="snap">Play Against Computer</button>
-<canvas id="canvas" width="640" height="480"></canvas>
+  <!-- TODO REMOVE THIS -->
+  <!-- <video id="video" width="640" height="480" autoplay></video> -->
+<!-- <button id="snap">Play Against Computer</button> -->
+
+<!-- <canvas id="canvas" width="640" height="480"></canvas> -->
 </body>
 </html>
