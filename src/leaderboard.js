@@ -1,85 +1,64 @@
-const playersURL = `http://localhost:3000/players/`
-const leaderBoardDiv = document.getElementById('leaderboard')
-const playerListUl = document.getElementById('playerlist')
-let playerLabels = []
-let playerTotalScores = []
+let lbPlayerUrl = `http://localhost:3000/players`
+let lbTable = document.getElementById('lb-table')
 // fetch Players
 const fetchPlayers = () => {
-  fetch(playersURL)
+  fetch(lbPlayerUrl)
     .then(response => response.json())
     .then((players) => renderLeaderBoardChart(players))
 }
-
-// // renderSinglePlayer
-// const renderSinglePlayer = (player) => {
-//   let playerLI = document.createElement('li')
-//   playerLI.innerHTML = `
-//   <h2>${player.username}</h2>
-//   <p>Final Score: ${calculateTotalScore(player)}</p>
-//   `
-// }
-
-const calculateTotalScore = (player) => {
-  let totalScore = 0
-  player.games.forEach((game) => {
-    totalScore += game.game_score
-  })
-  return totalScore
-}
-
 fetchPlayers()
 
 const renderLeaderBoardChart = (players) => {
-  players.all_players_games.forEach((player) => {
-    // renderSinglePlayer(player)
-    playerLabels.push(player.username)
-    playerTotalScores.push(calculateTotalScore(player))
+  players.forEach((player) => {
+    let playerRow = lbTable.insertRow(-1)
+    let playerCell = playerRow.insertCell(0)
+    let winsCell = playerRow.insertCell(1)
+    let lossesCell = playerRow.insertCell(2)
+    let drawsCell = playerRow.insertCell(3)
+    let totalCell = playerRow.insertCell(4)
+    playerCell.innerHTML = player.player
+    winsCell.innerHTML = player.wins
+    lossesCell.innerHTML = player.losses
+    drawsCell.innerHTML = player.draws
+    totalCell.innerHTML = player.total_score
   })
-  const ctx = document.getElementById('myChart').getContext('2d')
-  const myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: playerLabels,
-      datasets: [{
-        label: 'Points Scored',
-        data: playerTotalScores,
-        backgroundColor: function (context) {
-          let index = context.dataIndex
-          let value = context.dataset.data[index]
-          (value < 0) ? 'red' : 'green' // draw negative values in red
-        }
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              fontColor: '#556F7B',
-              fontFamily: 'Roboto Mono'
-            },
-            gridLines: {
-              zeroLineColor: 'transparent',
-              drawTicks: false,
-              display: false,
-              drawBorder: true
-            }
-          }],
-        xAxes: [
-          {
-            ticks: {
-              fontColor: '#556F7B',
-              fontFamily: 'Roboto Mono'
-            },
-            gridLines: {
-              zeroLineColor: 'transparent',
-              drawTicks: true,
-              display: true,
-              drawBorder: true
-            }
-          }
-        ]
+  sortTable()
+}
+function sortTable() {
+  let rows, switching, i, x, y, shouldSwitch;
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = lbTable.rows;
+    /*Loop through all lbTable rows (except the
+    first, which contains lbTable headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName('TD')[4];
+      y = rows[i + 1].getElementsByTagName('td')[4];
+      //check if the two rows should switch place:
+      if (Number(x.innerHTML) < Number(y.innerHTML)) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
       }
     }
-  })
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+
+  }
+  rows[1].getElementsByTagName('TD')[0].innerHTML += ' 👑 👑 👑'
+  rows[2].getElementsByTagName('TD')[0].innerHTML += ' 👑 👑'
+  rows[3].getElementsByTagName('TD')[0].innerHTML += ' 👑'
+
 }

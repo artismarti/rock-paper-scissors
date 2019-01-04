@@ -5,28 +5,22 @@ let label = 'test'
 let rockButton
 let paperButton
 let trainButton
-// let classifyButton
+let scissorButton
 
 function modelReady () {
-  console.log('--000000--')
   console.log('Model is ready!!!')
-  // classifier.load('./src/model.json ', customModelReady)
 }
 
 function customModelReady () {
   console.log('Custom Model is ready!!!')
   label = 'model ready'
-  // classifyButton = createButton('classify!')
-  // classifyButton.mousePressed(function () {
-  //   classifier.classify(gotResults)
-  // })
 }
 
 function videoReady () {
   console.log('Video is ready!!!')
 }
 
-function whileTraining(loss) {
+function whileTraining (loss) {
   if (loss == null) {
     console.log('Training Complete')
     classifier.classify(gotResults)
@@ -52,6 +46,7 @@ function setup () {
   video.hide()
   background(0)
   mobilenet = ml5.featureExtractor('MobileNet', modelReady)
+  mobilenet.numClasses = 3
   classifier = mobilenet.classification(video, videoReady)
 
   rockButton = createButton('rock')
@@ -62,6 +57,11 @@ function setup () {
   paperButton = createButton('paper')
   paperButton.mousePressed(function() {
     classifier.addImage('paper')
+  })
+
+  scissorButton = createButton('scissors')
+  scissorButton.mousePressed(function() {
+    classifier.addImage('scissors')
   })
 
   trainButton = createButton('train model')

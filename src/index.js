@@ -1,41 +1,97 @@
+var playerUrl = `http://localhost:3000/players`
 const playerUserName = document.getElementById('username')
 const playButton = document.getElementById('play')
+const welcomeDiv = document.getElementById('welcome-container')
+const gameDiv = document.getElementById('game-container')
+const leaderBoardDiv = document.getElementById('leaderboard-container')
+const leadButton = document.getElementById('viewlb')
+const lbLink = document.getElementById('leaderboardLink')
+let currentPlayer = document.getElementById('currentPlayer')
+let logOutLink = document.getElementById('logout')
+let psTableBody = document.getElementById('ps-table-body')
+let playerData
+gameDiv.style.display = 'none'
+leaderBoardDiv.style.display = 'none'
+logOutLink.style.display = 'none'
 
-const setCookie = (cname, cvalue, exdays) => {
-  let d = new Date()
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000))
-  let expires = 'expires=' + d.toGMTString()
-  document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/'
+const savePlayer = () => {
+  return fetch(playerUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      username: playerUserName.value
+    })
+  })
+    .then(response => response.json())
 }
 
-const getCookie = (cname) => {
-  let name = cname + '='
-  let decodedCookie = decodeURIComponent(document.cookie)
-  let ca = decodedCookie.split(';')
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i]
-    while (c.charAt(0) === ' ') {
-      c = c.substring(1)
-    }
-    if (c.indexOf(name) === 0) {
-      return c.substring(name.length, c.length)
-    }
+const fetchPlayer = () => {
+  let parsedLocalStoragePlayer = JSON.parse(window.localStorage.getItem('player')).id
+  fetch(`${playerUrl}/${parsedLocalStoragePlayer}`)
+    .then(response => response.json())
+    .then(games => renderPlayerStats(games))
+}
+
+// renderSinglePlayerStats
+const renderPlayerStats = (games) => {
+  psTableBody.innerHTML = ''
+  let playerRow = psTableBody.insertRow(-1)
+  let winsCell = playerRow.insertCell(0)
+  let lossesCell = playerRow.insertCell(1)
+  let drawsCell = playerRow.insertCell(2)
+  let totalCell = playerRow.insertCell(3)
+  if (games.wins === 0 && games.losses === 0 && games.draws === 0 && games.total_score === 0) {
+    winsCell.innerHTML = 0
+    lossesCell.innerHTML = 0
+    drawsCell.innerHTML = 0
+    totalCell.innerHTML = 0
+  } else {
+    winsCell.innerHTML = games.wins
+    lossesCell.innerHTML = games.losses
+    drawsCell.innerHTML = games.draws
+    totalCell.innerHTML = games.total_score
   }
-  return ''
 }
 
-const checkCookie = () => {
-  let user = playerUserName.value
-  if (user !== '' && user !== null) {
-    setCookie('username', user, 30)
-    console.log(document.cookie)
-  }
-}
-const eraseCookie = () => {
-  setCookie('username', '', -1);
-}
 
 playButton.addEventListener('click', () => {
-  console.log('Im in')
-  checkCookie()
+  savePlayer()
+    .then((player) => {
+      playerData = player
+      window.localStorage.setItem('player', JSON.stringify(player));
+      currentPlayer.innerText = playerData.username
+      logOutLink.style.display = 'inline'
+      fetchPlayer()
+    })
+  welcomeDiv.style.display = 'none'
+  gameDiv.style.display = ''
+})
+
+leadButton.addEventListener('click', () => {
+  welcomeDiv.style.display = 'none'
+  leaderBoardDiv.style.display = ''
+  gameDiv.style.display = 'none'
+})
+
+lbLink.addEventListener('click', () => {
+  welcomeDiv.style.display = 'none'
+  leaderBoardDiv.style.display = ''
+  gameDiv.style.display = 'none'
+})
+gameDiv.addEventListener('click', () => {
+  welcomeDiv.style.display = 'none'
+  gameDiv.style.display = ''
+  leaderBoardDiv.style.display = 'none'
+})
+
+logOutLink.addEventListener('click', () => {
+  logOutLink.style.display = 'none'
+  currentPlayer.style.display = 'none'
+  window.localStorage.clear()
+  welcomePlayerDiv.style.display = 'block'
+  gameDiv.style.display = 'none'
+  leaderBoardDiv.style.display = 'none'
 })
