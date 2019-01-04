@@ -15,7 +15,7 @@ class GamesController < ApplicationController
   # POST /players/:player_id/games
   def create
     @player.games.create!(game_params)
-    json_response(@player, :created)
+    json_response(@player.games, :created)
   end
 
   # POST /players/:player_id/games/:id
