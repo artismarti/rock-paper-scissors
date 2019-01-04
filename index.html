@@ -6,115 +6,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <link rel="stylesheet" href="src/index.css">
   <script defer src="src/index.js">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Lobster|Roboto" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js"></script>
+  <script src="https://unpkg.com/ml5@0.1.3/dist/ml5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <script defer src="src/sketch.js"></script>
   <script defer src="src/leaderboard.js"></script>
+  <link rel="stylesheet" href="src/index.css">
+
+
   <title>Rock. Paper. Scissors.</title>
   <!--[if lte IE 8]>
       <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
   <![endif]-->
   <!--[if gt IE 8]><!-->
-      <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
   <!--<![endif]-->
 
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 
-      <!--[if lte IE 8]>
+  <!--[if lte IE 8]>
           <link rel="stylesheet" href="css/layouts/marketing-old-ie.css">
       <![endif]-->
-      <!--[if gt IE 8]><!-->
-          <link rel="stylesheet" href="css/layouts/marketing.css">
-      <!--<![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="src/index.css">
+  <!--<![endif]-->
 </head>
 
 <div class="header">
-    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-        <a class="pure-menu-heading" href="">Rockr</a>
+  <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+    <a class="pure-menu-heading" href="">Rockr</a>
 
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item pure-menu-selected"><a href="#" class="pure-menu-link">Home</a></li>
-            <li class="pure-menu-item"><a href="#leaderboard_div" class="pure-menu-link">Leaderboard</a></li>
-            <li class="pure-menu-item"><a href="#" class="pure-menu-link">About</a></li>
-        </ul>
-    </div>
+    <ul class="pure-menu-list">
+      <li class="pure-menu-item"><a href="#leaderboard_div" id="leaderboardLink" class="pure-menu-link">Leaderboard</a></li>
+      <li class="pure-menu-item" id='currentPlayer'><a href="#" class="pure-menu-link"></a></li>
+      <li class="pure-menu-item" id='logout'><a href="#" class="pure-menu-link">Log Out</a></li>
+    </ul>
+  </div>
 </div>
 
-<div class="splash-container">
-    <div class="splash">
-        <h1 class="splash-head">Rock. Paper. Scissors.</h1>
-        <p class="splash-subhead">
-            <span style="background-color: #fafbdf; padding: 10px">Enter a username to begin:</span>
-        </p>
-        <div class="">
-          <input type="text" name="username" value="" id="username">
-        </div>
-        <p>
-            <a href="game.html" class="pure-button pure-button-primary" id="play">Play Game</a>
-        </p>
-        <p>
-            <a href="leaderboard.html" class="pure-button pure-button-secondary" id="viewlb">View Leaderboard</a>
-        </p>
+<div class="splash-container" id='welcome-container'>
+  <div class="splash">
+    <h1 class="splash-head">Rock. Paper. Scissors.</h1>
+    <p class="splash-subhead">
+      <span style="background-color: #fafbdf; padding: 10px">Enter a username to begin:</span>
+    </p>
+    <div class="">
+      <input type="text" name="username" value="" id="username">
     </div>
+    <p>
+      <button class="pure-button pure-button-primary" id="play">Play Game</button>
+    </p>
+    <p>
+      <button class="pure-button pure-button-secondary" id="viewlb">View Leaderboard</button>
+    </p>
+  </div>
+</div>
+<div id="game-container">
+  <h1>Rock Paper Scissors</h1>
+  <div id="welcomePlayer">
+    Welcome
+  </div>
+  <div id="countdown">
+
+  </div>
+
+  <div id="player-choice">
+
+  </div>
+  <div id='computer-choice'>
+
+  </div>
+  <div id='winner'>
+
+  </div>
+  <div id="countDown">
+
+  </div>
+  <div id="playerstats">
+    <table id="ps-table" class="flat-table">
+      <th>Won</th>
+      <th>Lost</th>
+      <th>Drew</th>
+      <th>Total</th>
+      <tbody id="ps-table-body">
+
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
-<div class="content-wrapper" id="leaderboard_div">
-    <div class="content">
-        <h2 class="content-head is-center">LEADERBOARD</h2>
+<div id="leaderboard-container">
+  <h2 class="content-head is-center">LEADERBOARD</h2>
 
-        <div class="pure-g">
-            <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-              <div id="leaderboard">
-                <ul id="playerlist">
-                </ul>
-              </div>
-              <canvas id="myChart" width="450" height="400"></canvas>
-            </div>
-          </div>
-
-    <div class="ribbon l-box-lrg pure-g">
-        <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
-            <img width="300" alt="File Icons" class="pure-img-responsive" src="img/common/file-icons.png">
-        </div>
-        <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
-
-            <h2 class="content-head content-head-ribbon">Placeholder Text.</h2>
-
-            <p>
-                Come, come, you talk greasily; your lips grow foul. Hast thou never an eye in thy head? Thou clouted crook-pated hugger-mugger! Thou dissembling idle-headed pigeon-egg! Thou mangled fen-sucked bum-bailey! Thou leathern-jerkin, crystal-button, knot-pated, agatering, puke-stocking, caddis-garter, smooth-tongue, Spanish pouch! Thou rank hedge-born boar-pig! Thou wimpled clapper-clawed flax-wench! Thou qualling unwash'd devil-mon!
-            </p>
-        </div>
-    </div>
-
-
-    <div class="footer l-box is-center">
-      Footer Goes Here
-    </div>
-
+  <div id="leaderboard">
+    <table id="lb-table" class="flat-table">
+      <tbody>
+        <tr>
+          <th>Player</th>
+          <th>Won</th>
+          <th>Lost</th>
+          <th>Drew</th>
+          <th>Total</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-
-  <!-- old code -->
-
-  <!-- <body class='container center'>
-
-    <h2>Pick one:</h2>
-    <div id='rps'>
-      <button type="button" id='rock' name="button">ROCK</button>
-      <button type="button" id='paper' name="button">PAPER</button>
-      <button type="button" id='scissors' name="button">SCISSORS</button>
-    </div>
-    <div id="player-choice">
-
-    </div>
-    <div id='computer-choice'>
-
-    </div>
-    <div id='winner'>
-
-    </div>
-  </body> -->
+<div class="footer l-box is-center">
+  Footer Goes Here
+</div>
+</body>
 
 </html>
