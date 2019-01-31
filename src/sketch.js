@@ -9,9 +9,12 @@ const winner = document.getElementById('winner')
 const countDownDiv = document.getElementById('countdown')
 const welcomePlayerDiv = document.getElementById('welcome-container')
 const timer = document.createElement('p')
+timer.style.color = 'red';
+timer.style.fontSize = '45px'
+timer.style.backgroundColor = '#FFFFFF'
 let milliseconds = 0;
 countDownDiv.appendChild(timer)
-timer.innerText = 'YOOOOO!'
+timer.innerText = ''
 
 
 function modelReady () {
@@ -24,9 +27,14 @@ function customModelReady () {
   label = 'model ready'
   classifyButton = createButton('PLAY!')
   classifyButton.mousePressed(function () {
+    const updatePlayerChoice = () => {
+      classifier.classify(showPlayerChoice)
+      window.requestAnimationFrame(updatePlayerChoice)
+    }
+    updatePlayerChoice()
     let counterText = 3
     const startGame = setInterval(() => {
-      if (counterText > 0) {
+      if (counterText > -1) {
         timer.innerText = counterText
         counterText--
       }
@@ -35,7 +43,7 @@ function customModelReady () {
       window.clearInterval(startGame)
       fetchPlayer()
       classifier.classify(gotResults)
-    }, 4000)
+    }, 3000)
   })
 
 }
@@ -56,7 +64,13 @@ function gotResults (error, result) {
     } else {
       chooseWinner('3')
     }
-    // classifier.classify(gotResults)
+  }
+}
+function showPlayerChoice (error, result) {
+  if (error) {
+    console.error(error)
+  } else {
+    label = result
   }
 }
 

@@ -1,5 +1,6 @@
 let lbPlayerUrl = `http://localhost:3000/players`
 let lbTable = document.getElementById('lb-table')
+let lbTableBody = document.getElementById('lb-table-body')
 // fetch Players
 const fetchPlayers = () => {
   fetch(lbPlayerUrl)
@@ -9,8 +10,9 @@ const fetchPlayers = () => {
 fetchPlayers()
 
 const renderLeaderBoardChart = (players) => {
+  lbTableBody.innerHTML = ''
   players.forEach((player) => {
-    let playerRow = lbTable.insertRow(-1)
+    let playerRow = lbTableBody.insertRow(-1)
     let playerCell = playerRow.insertCell(0)
     let winsCell = playerRow.insertCell(1)
     let lossesCell = playerRow.insertCell(2)

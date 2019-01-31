@@ -74,12 +74,14 @@ leadButton.addEventListener('click', () => {
   welcomeDiv.style.display = 'none'
   leaderBoardDiv.style.display = ''
   gameDiv.style.display = 'none'
+  fetchPlayers()
 })
 
 lbLink.addEventListener('click', () => {
   welcomeDiv.style.display = 'none'
   leaderBoardDiv.style.display = ''
   gameDiv.style.display = 'none'
+  fetchPlayers()
 })
 gameDiv.addEventListener('click', () => {
   welcomeDiv.style.display = 'none'
@@ -94,4 +96,8 @@ logOutLink.addEventListener('click', () => {
   welcomePlayerDiv.style.display = 'block'
   gameDiv.style.display = 'none'
   leaderBoardDiv.style.display = 'none'
+  // playerChoiceDiv.style.display = 'none'
+  // computerChoiceDiv.style.display = 'none'
+  // winner.style.display = 'none'
+  // timer.innerText = ''
 })
